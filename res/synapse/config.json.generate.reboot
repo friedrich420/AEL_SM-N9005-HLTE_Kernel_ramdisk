@@ -1,0 +1,47 @@
+#!/sbin/busybox sh
+
+cat << CTAG
+{
+    name:REBOOT,
+    elements:[
+	{ STitleBar:{
+		title:"Reboot Options"
+	}},
+	{ SDescription:{
+		description:""
+	}},
+	{ SButton:{
+		label:"Reboot Device",
+		action:"devtools reboot"
+	}},
+	{ SDescription:{
+		description:""
+	}},
+	{ SButton:{
+		label:"Reboot to Recovery",
+		action:"devtools reboot recovery"
+	}},
+	{ SDescription:{
+		description:""
+	}},
+	{ SButton:{
+		label:"Reboot to Download Mode",
+		action:"devtools reboot bootloader"
+				}},
+	{ SDescription:{
+		description:""
+	}},
+	{ SPane:{
+		title:"General Actions",
+		description:" To clear data, select Clear Synapse Data (fixes most common issues)."
+	}},
+	{ SDescription:{
+		description:" "
+	}},
+	{ SButton:{
+		label:"Clear Synapse Data",
+		action:"devtools cleardata"
+	}},
+    ]
+}
+CTAG

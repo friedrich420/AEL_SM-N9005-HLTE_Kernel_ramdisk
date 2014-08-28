@@ -1,0 +1,69 @@
+#!/sbin/busybox sh
+
+cat << CTAG
+{
+    name:NETWORK,
+    elements:[
+    	{ SPane:{
+		title:"TCP Congestion Control",
+		description:" Select your preferred WIFI TCP algorithm. Regulates upload and download affecting throughput in various ways. Default is cubic."
+    	}},
+	{ SDescription:{
+		description:""
+	}},
+	{ SOptionList:{
+		default:`cat proc/sys/net/ipv4/tcp_congestion_control`,
+		action:"generic proc/sys/net/ipv4/tcp_congestion_control",
+		values:[`while read values; do busybox printf "%s, \n" $values; done < proc/sys/net/ipv4/tcp_available_congestion_control`]
+	}},
+	{ SDescription:{
+		description:""
+	}},
+	{ SPane:{
+		title:"TCP/IP Network Security Tweak",
+		description:" Protect against SYN & DoS attack etc. Default is Disabled."
+	}},
+	{ SDescription:{
+		description:""
+	}},
+	{ SOptionList:{
+		default:`echo $(/res/synapse/actions/network tcp_security)`,
+		action:"network tcp_security",
+		values:[Disabled, Enabled,]
+	}},
+	{ SDescription:{
+		description:""
+	}},
+	{ SPane:{
+		title:"TCP/IP Network Speed Tweak",
+		description:" Optimize TCP buffer sizes for various networks. Default is Disabled."
+	}},
+	{ SDescription:{
+		description:""
+	}},
+	{ SOptionList:{
+		default:`echo $(/res/synapse/actions/network tcp_speed)`,
+		action:"network tcp_speed",
+		values:[Disabled, Enabled,]
+	}},
+	{ SDescription:{
+		description:""
+	}},
+	{ SPane:{
+		title:"GPS Region",
+		description:" Select GPS-Time-Zone for faster GPS lock! Use your region! A backup is automatically generated as /system/etc/gps.conf.bak, so by selecting Default will revert to original gps.conf."
+	}},
+	{ SDescription:{
+		description:""
+	}},
+	{ SOptionList:{
+		default:`echo $(/res/synapse/actions/network gps_zone)`,
+		action:"network gps_zone",
+		values:[Default, Asia, Europe, Oceania, North_America, South_America, Africa,]
+	}},
+	{ SDescription:{
+		description:""
+	}},
+    ]
+}
+CTAG

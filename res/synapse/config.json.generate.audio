@@ -1,0 +1,69 @@
+#!/sbin/busybox sh
+
+cat << CTAG
+{
+    name:AUDIO,
+    elements:[
+	{ SPane:{
+		title:"Digital output"
+	}},
+	{ SDescription:{
+		description:" "
+	}},
+	{ SSeekBar:{
+		title:"Set headphone volume",
+		max:10,
+		min:-20,
+		step:1,
+		default:`echo $(/res/synapse/actions/output /sys/kernel/sound_control_3/gpl_headphone_gain)`,
+		action:"output /sys/kernel/sound_control_3/gpl_headphone_gain"
+	}},
+	{ SDescription:{
+		description:" "
+	}},
+	{ SSeekBar:{
+		title:"Set speaker volume",
+		max:10,
+		min:-20,
+		step:1,
+		default:`echo $(/res/synapse/actions/output /sys/kernel/sound_control_3/gpl_speaker_gain)`,
+		action:"output /sys/kernel/sound_control_3/gpl_speaker_gain"
+	}},
+	{ SDescription:{
+		description:" "
+	}},
+	{ SPane:{
+		title:"Digital input"
+	}},
+	{ SDescription:{
+		description:" "
+	}},
+	{ SSeekBar:{
+		title:"Adjust microphone volume",
+		max:10,
+		min:-20,
+		step:1,
+		default:`echo $(/res/synapse/actions/input /sys/kernel/sound_control_3/gpl_mic_gain)`,
+		action:"input /sys/kernel/sound_control_3/gpl_mic_gain"
+	}},
+	{ SDescription:{
+		description:" "
+	}},
+	{ SSeekBar:{
+		title:"Adjust camera microphone volume",
+		max:10,
+		min:-20,
+		step:1,
+		default:`echo $(/res/synapse/actions/input /sys/kernel/sound_control_3/gpl_cam_mic_gain)`,
+		action:"input /sys/kernel/sound_control_3/gpl_cam_mic_gain"
+	}},
+	{ SPane:{
+		title:""
+	}},
+	{ SButton:{
+		label:"Faux Sound Version",
+		action:"show sound"
+	}},
+    ]
+}
+CTAG

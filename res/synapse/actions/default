@@ -1,0 +1,81 @@
+case $1 in
+vread)
+  bin=`cat /sys/devices/system/soc/soc0/soc_pvs`
+  if [ $bin == 0 ]
+  then
+  pvs=1075
+  elif [ $bin == 1 ]
+  then
+  pvs=1050
+  elif [ $bin == 2 ]
+  then
+  pvs=1025
+  elif [ $bin == 3 ]
+  then
+  pvs=1000
+  elif [ $bin == 4 ]
+  then
+  pvs=975
+  elif [ $bin == 5 ]
+  then
+  pvs=950
+  elif [ $bin == 6 ]
+  then
+  pvs=925
+  fi
+  while read freq volt
+  do
+  if [ ${freq//[mhz:]/} == 2265 ]
+  then
+  val=$((${volt//[ mV]/} - $pvs))
+  fi
+  done < /sys/devices/system/cpu/cpu0/cpufreq/UV_mV_table
+  echo $val
+  ;;
+vwrite)
+  P=/sys/devices/system/cpu/cpu0/cpufreq/UV_mV_table
+  readvolt=$(/res/synapse/actions/default vread)
+  default=`echo $readvolt | busybox awk '{$NF *= -1; print}'`
+  if [ ! -z $2 ]
+  then
+  val=""
+  while read freq volt; do val="$val $(($default + $2 + ${volt//[ mV]/}))"; done < $P
+  echo $val > $P
+  fi
+  echo $(/res/synapse/actions/default vread)
+  ;;
+hotplug)
+  P=/sys/module/intelli_plug/parameters/intelli_plug_active
+  if [ ! -z $2 ]
+  then
+  if [ $2 == 1 ]
+  then
+  stop mpdecision
+  else
+  start mpdecision
+  fi
+  echo $2 > $P
+  fi
+  echo `cat $P`
+  ;;
+version)
+  echo `busybox uname -r`
+  ;;
+build)
+  echo `getprop ro.build.PDA`
+  ;;
+baseband)
+  echo `getprop gsm.version.baseband`
+  ;;
+bootloader)
+  echo `getprop ro.bootloader`
+  ;;
+serial)
+  P=/efs/FactoryApp/serial_no
+  if [ -f $P ]; then
+    echo `cat $P`
+  else
+    echo `getprop ro.boot.serialno`
+  fi
+  ;;
+esac

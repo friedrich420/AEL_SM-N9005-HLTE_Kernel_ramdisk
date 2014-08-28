@@ -1,0 +1,152 @@
+#!/sbin/busybox sh
+
+cat << CTAG
+{
+    name:DRIVER,
+    elements:[
+	{ SPane:{
+		title:"Intelli-Hotplug",
+		description:" An in-Kernel replacement for Qualcomm Hotplug MPDecision. Enabling this will disable MPDecision Hotplug.",
+		default:`cat /sys/module/intelli_plug/parameters/intelli_plug_active`,
+	}},
+	{ SDescription:{
+		description:" "
+	}},
+	{ SCheckBox:{
+		label:"Enable Intelli-Hotplug",
+		action:"default hotplug"
+	}},
+	{ SDescription:{
+		description:" "
+	}},
+	{ SOptionList:{
+		title:"Intelli-Hotplug Profile ",
+		default:`cat /sys/module/intelli_plug/parameters/nr_run_profile_sel`,
+		action:"generic /sys/module/intelli_plug/parameters/nr_run_profile_sel",
+		values:{
+			`PROF='0:"Balanced", 1:"Performance", 2:"Conservative", 3:"Eco Performance", 4:"Eco Conservative"'
+			echo $PROF`
+		}
+	}},
+	{ SDescription:{
+		description:" "
+	}},
+	{ SSeekBar:{
+		title:"Set Hysteresis Value",
+		description:" Default is 8.",
+		max:16,
+		min:0,
+		step:1,
+		default:`cat /sys/module/intelli_plug/parameters/nr_run_hysteresis`,
+		action:"generic /sys/module/intelli_plug/parameters/nr_run_hysteresis",
+	}},
+	{ SDescription:{
+		description:" "
+	}},
+	{ SOptionList:{
+		title:"Screen OFF Max Frequency",
+		description:" Default is Disabled. Hard Limit driver is in control.",
+		unit:" kHz",
+		default:`cat /sys/module/intelli_plug/parameters/screen_off_max`,
+		action:"generic /sys/module/intelli_plug/parameters/screen_off_max",
+		values:{
+			`SOMF='4294967295:"Disabled", 300000:"300000", 422400:"422400", 652800:"652800", 729600:"729600", 883200:"883200", 960000:"960000", 1036800:"1036800", 1190400:"1190400", 1267200:"1267200", 1497600:"1497600", 1574400:"1574400", 1728000:"1728000", 1958400:"1958400", 2265600:"2265600"'
+			echo $SOMF`
+		}
+	}},
+	{ SDescription:{
+		description:" "
+	}},
+	{ SCheckBox:{
+		label:"Enable Touch Boost Active",
+		description:" Default is Enabled whilst Intelli-Hotplug is active.",
+		default:`cat /sys/module/intelli_plug/parameters/touch_boost_active`,
+		action:"generic /sys/module/intelli_plug/parameters/touch_boost_active",
+	}},
+	{ SDescription:{
+		description:" "
+	}},
+	{ SPane:{
+		title:"Dynamic FSYNC",
+		description:" While screen is on file sync is disabled, when screen is off a file sync is called to flush all outstanding writes and restore file sync operation as normal."
+	}},
+	{ SDescription:{
+		description:" "
+	}},
+	{ SCheckBox:{
+		label:"Enable dynamic fsync",
+		default:`cat /sys/kernel/dyn_fsync/Dyn_fsync_active`,
+		action:"generic /sys/kernel/dyn_fsync/Dyn_fsync_active"
+	}},
+	{ SDescription:{
+		description:" "
+	}},
+	{ SPane:{
+		title:"PowerSuspend",
+		description:" PowerSuspend driver is a replacement for the early_suspend/late_resume driver. Hybrid uses autosleep & display panel hook. Default is Hybrid."
+	}},
+	{ SDescription:{
+		description:" "
+	}},
+	{ SOptionList:{
+		default:`echo $(/res/synapse/actions/suspend powersuspend)`,
+		action:"suspend powersuspend",
+		values:[Autosleep_hook, Userspace_trigger, DisplayPanel_hook, Hybrid_hook,]
+	}},
+	{ SDescription:{
+		description:" "
+	}},
+	{ SPane:{
+		title:"CPU_Boost"
+	}},
+	{ SDescription:{
+		description:" "
+	}},
+	{ SOptionList:{
+		title:"Set Boost Sync frequency",
+		description:" When CPU loading crosses the preset threshold, the current CPU is raised to this frequency. Default is 1190.4 MHz ",
+		unit:" kHz",
+		default:`cat /sys/module/cpu_boost/parameters/sync_threshold`,
+		action:"generic /sys/module/cpu_boost/parameters/sync_threshold",
+		values:[`while read values; do busybox printf "%s, \n" $values; done < /sys/devices/system/cpu/cpu0/cpufreq/scaling_available_frequencies`]
+	}},
+	{ SDescription:{
+		description:" "
+	}},
+	{ SSeekBar:{
+		title:"Set Boost time in milliseconds ",
+		description:" Minimum interval a CPU is boosted. Default is 20.",
+		unit:" ms",
+		max:100,
+		min:10,
+		step:10,
+		default:`cat /sys/module/cpu_boost/parameters/boost_ms`,
+		action:"generic /sys/module/cpu_boost/parameters/boost_ms",
+	}},
+	{ SDescription:{
+		description:" "
+	}},
+	{ SOptionList:{
+		title:"Set input Boost frequency",
+		description:" This will boost your minimum CPU speed to the selected frequency when you touch the screen or press a button. Default is 0 kHz meaning it will jump in immediately.",
+		unit:" kHz",
+		default:`cat /sys/module/cpu_boost/parameters/input_boost_freq`,
+		action:"generic /sys/module/cpu_boost/parameters/input_boost_freq",
+		values:[0, 300000, 422400, 652800, 729600, 883200, 960000, 1036800, 1190400, 1267200, 1497600, 1574400, 1728000, 1958400, 2265600,]
+	}},
+	{ SDescription:{
+		description:" "
+	}},
+	{ SSeekBar:{
+		title:"Set Input_Boost time in milliseconds ",
+		description:" Minimum interval a CPU is boosted when input is detected. Default is 40.",
+		unit:" ms",
+		max:100,
+		min:10,
+		step:10,
+		default:`cat /sys/module/cpu_boost/parameters/input_boost_ms`,
+		action:"generic /sys/module/cpu_boost/parameters/input_boost_ms",
+	}},
+    ]
+}
+CTAG

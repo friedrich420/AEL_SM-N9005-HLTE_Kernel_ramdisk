@@ -1,0 +1,78 @@
+#!/sbin/busybox sh
+
+cat << CTAG
+{
+    name:TOUCH WAKE,
+    elements:[
+	{ SPane:{
+		title:"Touch Wake Control",
+		description:" Allows you to wake the device via one tap in the middle of the screen. NOTE: Turning the device off with the power key will disable touchwake. Default is Disabled."
+	}},
+	{ SDescription:{
+		description:" "
+	}},
+	{ SCheckBox:{
+		label:"Enable Touch Wake",
+		default:`cat /sys/class/misc/touchwake/enabled`,
+		action:"generic /sys/class/misc/touchwake/enabled"
+	}},
+	{ SDescription:{
+		description:" "
+	}},
+	{ SPane:{
+		title:"Touch Wake Delay",
+		description:" Set a delay (until the touch controls will be disabled, after screen off). Value of 0 means the touch controls will be kept enabled indefinitely & will drain battery ! Default is 5 sec."
+	}},
+	{ SDescription:{
+		description:" "
+	}},
+	{ SSeekBar:{
+		unit:" ms",
+		step:1000,
+		min:0,
+		max:600000,
+		default:`cat /sys/class/misc/touchwake/delay`,
+		action:"generic /sys/class/misc/touchwake/delay"
+	}},
+	{ SDescription:{
+		description:" "
+	}},
+	{ SPane:{
+		title:"Proximity Threshold",
+		description:" Sets the threshold from which to consider the proximity sensor triggered (which will disable touchwake). NOTE: This serves as a kind of in-call detection to not turn the screen on during a call when placing the device to the ear. Default is 150."
+	}},
+	{ SDescription:{
+		description:" "
+	}},
+	{ SSeekBar:{
+		step:25,
+		min:25,
+		max:275,
+		default:`cat /sys/class/misc/touchwake/proximity_threshold`,
+		action:"generic /sys/class/misc/touchwake/proximity_threshold"
+	}},
+	{ SDescription:{
+		description:" "
+	}},
+	{ SPane:{
+		title:"Wakelock",
+		description:" Enable or Disable using a wakelock to keep device awake while TouchWake is active. Default is Enabled."
+	}},
+	{ SDescription:{
+		description:" "
+	}},
+	{ SCheckBox:{
+		label:"Enable Wakelock",
+		default:`cat /sys/class/misc/touchwake/use_wakelock`,
+		action:"generic /sys/class/misc/touchwake/use_wakelock"
+	}},
+	{ SPane:{
+		title:""
+	}},
+	{ SButton:{
+		label:"Version information",
+		action:"show touch"
+	}},
+    ]
+}
+CTAG

@@ -1,0 +1,112 @@
+#!/sbin/busybox sh
+
+cat << CTAG
+{
+    name:BATTERY,
+    elements:[
+	{ SPane:{
+		title:"Battery Info"
+	}},
+	{ SLiveLabel:{
+		refresh:1000,
+		action:"live battstatus"
+	}},
+	{ SLiveLabel:{
+		refresh:1000,
+		action:"live battcapa"
+	}},
+	{ SLiveLabel:{
+		refresh:1000,
+		action:"live batttemp"
+	}},
+	{ SLiveLabel:{
+		refresh:9000,
+		action:"live batthealth"
+	}},
+	{ SDescription:{
+		description:" "
+	}},
+	{ SPane:{
+		title:"Enable/Disable FastCharge"
+	}},
+	{ SDescription:{
+		description:""
+	}},
+	{ SOptionList:{
+		default:`echo $(/res/synapse/actions/fast fastcharge)`,
+		action:"fast fastcharge",
+		values:[Disabled, Enabled_FastCharge, Enabled_FastCharge_with_Custom_Levels,]
+	}},
+	{ SDescription:{
+		description:""
+	}},
+	{ SPane:{
+		title:"Custom_Levels settings",
+		description:" Only possible when FastCharge Custom_Levels is selected"
+	}},
+	{ SDescription:{
+		description:""
+	}},
+	{ SOptionList:{
+		title:"Set AC Custom Charge Level - default is 1800",
+		default:`cat /sys/kernel/fast_charge//ac_charge_level`,
+		action:"generic /sys/kernel/fast_charge/ac_charge_level",
+		values:[2100, 2000, 1900, 1800, 1700, 1600, 1500, 1400, 1300, 1200, 1100, 1000,]
+	}},
+	{ SDescription:{
+		description:""
+	}},
+	{ SOptionList:{
+		title:"Set USB Custom Charge Level - default is 460",
+		default:`cat /sys/kernel/fast_charge//usb_charge_level`,
+		action:"generic /sys/kernel/fast_charge/usb_charge_level",
+		values:[1000, 900, 800, 700, 600, 500, 460,]
+	}},
+	{ SDescription:{
+		description:""
+	}},
+	{ SOptionList:{
+		title:"Set Wireless Custom Charge Level - default is 650",
+		default:`cat /sys/kernel/fast_charge/wireless_charge_level`,
+		action:"generic /sys/kernel/fast_charge/wireless_charge_level",
+		values:[1200, 1100, 1000, 900, 800, 650,]
+	}},
+	{ SDescription:{
+		description:""
+	}},
+	{ SPane:{
+		title:"FAILSAVE - DISABLE AT OWN RISK",
+		description:" If disabled you allow anything up to 2.1A/h to be used as AC / USB custom current"
+	}},
+	{ SDescription:{
+		description:""
+	}},
+	{ SCheckBox:{
+		label:"Un-check to disable - ON YOUR OWN RISK",
+		default:`cat /sys/kernel/fast_charge/failsafe`,
+		action:"generic /sys/kernel/fast_charge/failsafe"
+	}},
+	{ SDescription:{
+		description:" "
+	}},
+	{ SButton:{
+		label:"Fast Charge Info",
+		action:"show fast"
+	}},
+	{ SDescription:{
+		description:" "
+	}},
+	{ SPane:{
+		title:"Battery Scaling Calibration",
+		description:" If you are having incorrect battery SCALING issues, this will reset your device battery % to scale correctly to the approximate available mV. Give it a few hours after you reset the gauge. It may still show you funny values for that period, then the battery percentage should be fine after a full charge cycle."
+	}},
+	{ SButton:{
+		label:"Reset Fuel-Gauge Chip Now",
+		action:"fuel-gauge fuel-gauge"
+	}},
+	{ SDescription:{
+		description:""
+	}},
+    ]
+}
+CTAG

@@ -1,0 +1,24 @@
+TIMESTAMP=`date +%Y-%m-%d.%H.%M.%S`;
+LOGS=/sdcard/AEL/Logs;
+
+[ ! -d "$LOGS" ] && mkdir -p "$LOGS";
+chmod 755 $LOGS
+
+case $1 in
+	logcat)
+		saved="$LOGS/logcat-$TIMESTAMP.txt";
+		logcat -d > $saved;
+	;;
+
+	dmesg)
+		saved="$LOGS/dmesg-$TIMESTAMP.txt";
+		dmesg > $saved;
+	;;
+
+esac;
+
+case $1 in
+	logcat|dmesg|kmsg)
+		echo "Logfile saved to $saved";
+	;;
+esac;

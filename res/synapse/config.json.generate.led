@@ -1,0 +1,64 @@
+#!/sbin/busybox sh
+
+cat << CTAG
+{
+    name:LED,
+    elements:[
+	{ SPane:{
+		title:"Brightness"
+	}},
+	{ SDescription:{
+		description:" "
+	}},
+	{ SSeekBar:{
+		description:" Set the relative intensity of the LED respecting the userspace's request.",
+		min:0,
+		max:255,
+		step:1,
+		default:`cat /sys/class/sec/led/led_intensity`,
+		action:"generic /sys/class/sec/led/led_intensity"
+	}},
+	{ SDescription:{
+		description:" "
+	}},
+	{ SPane:{
+		title:"Set devider for LED (on)"
+	}},
+	{ SDescription:{
+		description:" "
+	}},
+	{ SSeekBar:{
+		description:" Divider for delay on. (0 = no on time / 1 = stock).",
+		min:0,
+		max:5,
+		step:1,
+		default:`cat /sys/class/sec/led/led_speed_on`,
+		action:"generic /sys/class/sec/led/led_speed_on"
+	}},
+	{ SDescription:{
+		description:" "
+	}},
+	{ SPane:{
+		title:"Set divider for LED (off)"
+	}},
+	{ SDescription:{
+		description:" "
+	}},
+	{ SSeekBar:{
+		description:" Divider for delay off. (0 = no off time / 1 = stock).",
+		min:0,
+		max:5,
+		step:1,
+		default:`cat /sys/class/sec/led/led_speed_off`,
+		action:"generic /sys/class/sec/led/led_speed_off"
+	}},
+	{ SPane:{
+		title:""
+	}},
+	{ SButton:{
+		label:"Led Extended control version",
+		action:"show led"
+	}},
+    ]
+}
+CTAG

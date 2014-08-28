@@ -1,0 +1,44 @@
+#!/sbin/busybox sh
+
+cat << CTAG
+{
+    name:CPU,
+    elements:[
+	{ SLiveLabel:{
+		refresh:1000,
+		action:"live temp"
+	}},
+	{ SLiveLabel:{
+		refresh:1000,
+		action:"live LiveCPUFrequency"
+	}},
+	{ SDescription:{
+		description:" "
+	}},
+	{ SPane:{
+		title:" CPU Maximum Scaling Frequency"
+	}},
+	{ SSeekBar:{
+		description:" Set Max CPU frequency and OC to 2803.2 MHz. Be careful, your device may reboot if if cannot handle OC! Default is 2265.6 MHz.",
+		unit:" Mhz",
+		weight:0.001,
+		default:`cat /sys/devices/system/cpu/cpu0/cpufreq/scaling_max_freq`,
+		action:"generic /sys/devices/system/cpu/cpu0/cpufreq/scaling_max_freq",
+		values:[`while read values; do busybox printf "%s, \n" $values; done < /sys/devices/system/cpu/cpu0/cpufreq/scaling_available_frequencies`]
+	}},
+	{ SDescription:{
+		description:" "
+	}},
+	{ SPane:{
+		title:"Ununsed CPU Frequencies:"
+	}},
+	{ SDescription:{
+		description:" "
+	}},
+	{ SLiveLabel:{
+		refresh:2500,
+		action:"live LiveUnUsed"
+	}},
+    ]
+}
+CTAG
