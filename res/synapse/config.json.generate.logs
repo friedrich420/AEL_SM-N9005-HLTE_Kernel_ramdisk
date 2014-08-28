@@ -24,13 +24,6 @@ cat << CTAG
 	{ SDescription:{
 		description:""
 	}},
-	{ SButton:{
-		label:"Save last_kmsg",
-		action:"log kmsg"
-	}},
-	{ SDescription:{
-		description:" "
-	}},
     ]
 }
 
