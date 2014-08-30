@@ -1244,10 +1244,4 @@ service Post-init /sbin/custom.sh
     class main
     user root
     oneshot
-
-# init AEL Kernel
-service adaminit /sbin/ael_post_boot.sh
-    class core
-    user root
-    oneshot
 	

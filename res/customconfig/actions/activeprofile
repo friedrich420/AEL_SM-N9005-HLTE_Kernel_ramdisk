@@ -1,0 +1,11 @@
+#!/sbin/busybox sh
+
+if [ "a$2" != "a" ];then
+echo $2 > /data/.ael/.ael.profile
+fi
+
+if [ -f /data/.ael/.ael.profile ];then
+  cat /data/.ael/.ael.profile
+else
+  echo "balanced" > /data/.ael/.ael.profile
+fi
