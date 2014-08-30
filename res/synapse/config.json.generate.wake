@@ -73,6 +73,22 @@ cat << CTAG
 		label:"Version information",
 		action:"show touch"
 	}},
+	{ SPane:{
+		title:"Sweep2Sleep",
+		description:" Allows you to turn the screen off by swiping UNDER the navigation bar right > left (may cause more battery drain - not tested).",
+	}},
+	{ SCheckBox:{
+		label:"Enable or Disable Sweep2Sleep",
+		default:`cat /sys/android_touch/sweep2wake`,
+		action:"generic /sys/android_touch/sweep2wake"
+	}},
+	{ SPane:{
+		title:""
+	}},
+	{ SButton:{
+		label:"Sweep2Sleep version",
+		action:"show sweep"
+	}},
     ]
 }
 CTAG

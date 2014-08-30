@@ -21,7 +21,7 @@ cat << CTAG
     	{ SLiveLabel:{
 		refresh:10000000,
 		style:"bold",
-		action:"echo friedrich420 @ XDA"
+		action:"echo friedrich420"
 	}},
 	{ SSpacer:{
 		height:2

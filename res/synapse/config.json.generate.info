@@ -20,21 +20,21 @@ cat << CTAG
 	}},
 	{ SPane:{
 		title:"Special Features",
-		description:" Work-In-Progress......."
+		description:" www.echoerom.com/phpbb"
 	}},
 	{ SDescription:{
 		description:""
 	}},
 	{ SPane:{
 		title:"Special Thanks to",
-		description:" Faux123 - Yank555.lu - UpInTheAir - ECHOE TEAM - and many others!"
+		description:" Faux123 - Yank555.lu - UpInTheAir - and many others!"
 	}},
 	{ SDescription:{
 		description:""
 	}},
 	{ SPane:{
 		title:"Source",
-		description:" Source is available at ......... "
+		description:" Source is available at https://github.com/friedrich420/Note-3-AEL-Kernel-NEW-NG2-2 "
 	}},
 	{ SDescription:{
 		description:""

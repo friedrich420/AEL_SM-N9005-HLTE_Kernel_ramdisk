@@ -1,0 +1,100 @@
+#!/system/bin/sh
+
+read() {
+    P=/sys/class/mdnie/mdnie
+    echo $(busybox printf "#%02X%02X%02X\n" $(cat $P/$1))
+}
+
+cat << CTAG
+{
+    name:SCREEN,
+    elements:[
+	{ SPane:{
+		title:"MDNIE control",
+		description:"Mobile digital natural image engine. Samsungs hardware image post-processor, originally developed as part of a concerted effort to improve television picture quality on non-high-definition-televisions."
+	}},
+	{ SCheckBox:{
+		label:"Enable mdnie control",
+		default:`cat /sys/class/mdnie/mdnie/control_override`,
+		action:"generic /sys/class/mdnie/mdnie/control_override"
+	}},
+	{ SButton:{
+		label:"Version information",
+		action:"show screen"
+	}},
+	{ SPane:{
+		title:"Black level",
+		description:"Note 3 devices have an issue with the AMOLED controller in which, if individial pixels get power-gated for true black, they occur a latency delay when getting powered on again, resulting in a visible smearing effect. This control slightly increase the black level to reduce this problem, it will also eliminate black crush."
+	}},
+	{ SSeekBar:{
+		title:"Increase black level",
+		max:4,
+		default:`echo $(/res/synapse/actions/screen control_black)`,
+		weight:0.39,
+		unit:"%",
+		action:"screen control_black"
+	}},
+	{ SPane:{
+		title:"Color channel"
+	}},
+	{ SColourPicker:{
+		title:"White",
+		default:`echo $(read control_white)`,
+		action:"screen control_white"
+	}},
+	{ SColourPicker:{
+		title:"Red",
+		default:`echo $(read control_red)`,
+		action:"screen control_red"
+	}},
+	{ SColourPicker:{
+		title:"Green",
+		default:`echo $(read control_green)`,
+		action:"screen control_green"
+	}},
+	{ SColourPicker:{
+		title:"Blue",
+		default:`echo $(read control_blue)`,
+		action:"screen control_blue"
+	}},
+	{ SColourPicker:{
+		title:"Cyan",
+		default:`echo $(read control_cyan)`,
+		action:"screen control_cyan"
+	}},
+	{ SColourPicker:{
+		title:"Magenta",
+		default:`echo $(read control_magenta)`,
+		action:"screen control_magenta"
+	}},
+	{ SColourPicker:{
+		title:"Yellow",
+		default:`echo $(read control_yellow)`,
+		action:"screen control_yellow"
+	}},
+	{ SButton:{
+		label:"Save settings to init.d script",
+		action:"default screendata"
+	}},
+	{ SPane:{ 
+		title:"Gamma"
+	}},
+	{ SOptionList:{
+		title:"Set gamma curve",
+		default:`echo $(/res/synapse/actions/default gamma)`,
+		action:"default gamma",
+		values:[Dynamic, Standard, Movie, Natural, Auto,]
+	}},
+	{ SPane:{ 
+		title:"Digital edge enhancement"
+	}},
+	{ SSeekBar:{
+		title:"Sharpen",
+		min:0,
+		max:11,
+		default:`cat /sys/class/mdnie/mdnie/control_sharpen`,
+		action:"generic /sys/class/mdnie/mdnie/control_sharpen"
+	}},
+    ]
+}
+CTAG
